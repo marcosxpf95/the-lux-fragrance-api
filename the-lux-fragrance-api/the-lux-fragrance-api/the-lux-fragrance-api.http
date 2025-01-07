@@ -1,0 +1,6 @@
+@the_lux_fragrance_api_HostAddress = http://localhost:5012
+
+GET {{the_lux_fragrance_api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

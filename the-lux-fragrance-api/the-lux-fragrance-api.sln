@@ -1,0 +1,16 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "the-lux-fragrance-api", "the-lux-fragrance-api\the-lux-fragrance-api.csproj", "{4454C7A6-21B6-4E27-B7F5-3C599D9244CC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4454C7A6-21B6-4E27-B7F5-3C599D9244CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4454C7A6-21B6-4E27-B7F5-3C599D9244CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4454C7A6-21B6-4E27-B7F5-3C599D9244CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4454C7A6-21B6-4E27-B7F5-3C599D9244CC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
