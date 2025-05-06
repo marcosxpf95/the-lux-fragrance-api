@@ -3,7 +3,6 @@ using the_lux_fragrance_api.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Configuração do CORS
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll", builder =>
@@ -14,20 +13,16 @@ builder.Services.AddCors(options =>
     });
 });
 
-// Configuração do DbContext para conectar ao PostgreSQL
 builder.Services.AddDbContext<CatalogoContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))); // Usando PostgreSQL
 
-// Configuração dos controllers
 builder.Services.AddControllersWithViews();
 
-// Configuração do Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Se a aplicação não for de desenvolvimento, configure o HSTS e um manipulador de exceções
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
