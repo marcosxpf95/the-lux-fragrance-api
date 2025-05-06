@@ -16,4 +16,4 @@ WORKDIR /app
 COPY --from=build-env /app/out .
 
 # Define a porta dinâmica do Heroku e inicia a aplicação
-CMD ASPNETCORE_URLS="http://*:$PORT" dotnet the-lux-fragrance-api.dll
+CMD ["dotnet", "the-lux-fragrance-api.dll"]
