@@ -3,7 +3,7 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build-env
 WORKDIR /app
 
 # Copiar o csproj e restaurar as dependências na pasta correta
-COPY the-lux-fragrance-api/the-lux-fragrance-api.csproj the-lux-fragrance-api/
+COPY the-lux-fragrance-api/the-lux-fragrance-api.csproj ./the-lux-fragrance-api/
 WORKDIR /app/the-lux-fragrance-api
 RUN dotnet restore
 
