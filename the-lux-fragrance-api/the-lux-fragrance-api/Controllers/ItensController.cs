@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using the_lux_fragrance_api.Data;
+using the_lux_fragrance_api.Dto;
+using the_lux_fragrance_api.Mappings;
 using the_lux_fragrance_api.Models;
+using the_lux_fragrance_api.Service.Interface;
 
 namespace the_lux_fragrance_api.Controllers;
 
@@ -9,38 +10,52 @@ namespace the_lux_fragrance_api.Controllers;
 [ApiController]
 public class ItensController : ControllerBase
 {
-    private readonly CatalogoContext _context;
+    private readonly IItemService _itemService;
 
-    public ItensController(CatalogoContext context)
+    public ItensController(IItemService itemService)
     {
-        _context = context;
+        _itemService = itemService;
     }
-    
+
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Item>>> GetItens()
+    public async Task<ActionResult<IEnumerable<ItemDto>>> GetItens()
     {
-        return await _context.Itens.ToListAsync();
+        var itens = await _itemService.GetItens();
+
+        if (itens == null || !itens.Any())
+        {
+            return NotFound("Nenhum item encontrado.");
+        }
+
+        var itensDto = itens.Select(item => item.ToDto());
+
+        return Ok(itensDto);
     }
     
     [HttpGet("{id}")]
-    public async Task<ActionResult<Item>> GetItem(int id)
+    public async Task<ActionResult<ItemDto>> GetItem(int id)
     {
-        var item = await _context.Itens.FindAsync(id);
+        var item = await _itemService.GetItemByIdAsync(id);
 
         if (item == null)
         {
             return NotFound();
         }
 
-        return item;
+        return item.ToDto();
     }
     
     [HttpPost]
-    public async Task<ActionResult<Item>> PostItem(Item item)
+    public async Task<ActionResult<Item>> PostItem(ItemDto item)
     {
-        _context.Itens.Add(item);
-        await _context.SaveChangesAsync();
-        return CreatedAtAction(nameof(GetItem), new { id = item.Id }, item);
+        var itemCreated = await _itemService.CriarItemAsync(item.ToModel());
+
+        if (itemCreated == null)
+        {
+            return BadRequest("Erro ao criar o item.");
+        }
+
+        return CreatedAtAction(nameof(GetItem), new { id = itemCreated.Id }, itemCreated);
     }
     
     [HttpPut("{id}")]
@@ -48,26 +63,30 @@ public class ItensController : ControllerBase
     {
         if (id != item.Id)
         {
-            return BadRequest();
+            return BadRequest("O ID da URL não corresponde ao ID do item.");
         }
 
-        _context.Entry(item).State = EntityState.Modified;
-        await _context.SaveChangesAsync();
+        var itemAtualizado = await _itemService.AtualizarItemAsync(id, item);
+
+        if (itemAtualizado == null)
+        {
+            return NotFound($"Item com ID {id} não encontrado.");
+        }
 
         return NoContent();
     }
-    
+
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteItem(int id)
     {
-        var item = await _context.Itens.FindAsync(id);
+        var item = await _itemService.GetItemByIdAsync(id);
+
         if (item == null)
         {
-            return NotFound();
+            return NotFound($"Item com ID {id} não encontrado.");
         }
 
-        _context.Itens.Remove(item);
-        await _context.SaveChangesAsync();
+        await _itemService.DeletarItem(item.Id);
 
         return NoContent();
     }

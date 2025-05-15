@@ -10,5 +10,26 @@ public class CatalogoContext : DbContext
     {
     }
 
-    public DbSet<Item> Itens { get; set; }  // Define a tabela 'Itens'
+    public DbSet<Item> Itens { get; set; }
+    public DbSet<Vendedor> Vendedores { get; set; }
+    public DbSet<Catalogo> Catalogos { get; set; }
+    public DbSet<CatalogoItem> CatalogoItens { get; set; }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+
+        modelBuilder.Entity<CatalogoItem>()
+            .HasKey(ci => new { ci.CatalogoId, ci.ItemId });
+
+        modelBuilder.Entity<CatalogoItem>()
+            .HasOne(ci => ci.Catalogo)
+            .WithMany(c => c.CatalogoItens)
+            .HasForeignKey(ci => ci.CatalogoId);
+
+        modelBuilder.Entity<CatalogoItem>()
+            .HasOne(ci => ci.Item)
+            .WithMany(i => i.CatalogoItens)
+            .HasForeignKey(ci => ci.ItemId);
+    }
 }

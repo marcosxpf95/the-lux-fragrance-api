@@ -1,5 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using the_lux_fragrance_api.Data;
+using the_lux_fragrance_api.Repository;
+using the_lux_fragrance_api.Repository.Interface;
+using the_lux_fragrance_api.Service;
+using the_lux_fragrance_api.Service.Interface;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,27 +32,31 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddScoped<IItemService, ItemService>();
+builder.Services.AddScoped<IItemRepository, ItemRepository>();
+builder.Services.AddScoped<IVendedorService, VendedorService>();
+builder.Services.AddScoped<IVendedorRepository, VendedorRepository>();
+
 var app = builder.Build();
 
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    app.UseHsts();  // HSTS para segurança
+    app.UseHsts();
 }
 
-app.UseCors("AllowAll"); // Ativa o CORS
+app.UseCors("AllowAll");
 
-app.UseHttpsRedirection();  // Redireciona todas as requisições HTTP para HTTPS
-app.UseStaticFiles(); // Serve arquivos estáticos (se houver)
+app.UseHttpsRedirection();
+app.UseStaticFiles();
 
-app.UseRouting(); // Permite o roteamento dos endpoints da aplicação
+app.UseRouting();
 
-app.UseAuthorization(); // Adiciona a autorização se necessário
+app.UseAuthorization();
 
-// Configuração do Swagger para ambiente de desenvolvimento
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();  // Gera o Swagger
+    app.UseSwagger();
     app.UseSwaggerUI(options =>
     {
         options.SwaggerEndpoint("/swagger/v1/swagger.json", "API V1");
@@ -56,7 +64,6 @@ if (app.Environment.IsDevelopment())
     });
 }
 
-// Mapeia as rotas padrão para os controllers
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
