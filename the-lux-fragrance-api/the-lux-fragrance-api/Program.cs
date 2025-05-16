@@ -11,9 +11,9 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll", builder =>
     {
-        builder.AllowAnyOrigin()  // Permite qualquer origem
-            .AllowAnyMethod()  // Permite qualquer método HTTP
-            .AllowAnyHeader(); // Permite qualquer cabeçalho
+        builder.AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader();
     });
 });
 
@@ -36,6 +36,8 @@ builder.Services.AddScoped<IItemService, ItemService>();
 builder.Services.AddScoped<IItemRepository, ItemRepository>();
 builder.Services.AddScoped<IVendedorService, VendedorService>();
 builder.Services.AddScoped<IVendedorRepository, VendedorRepository>();
+builder.Services.AddScoped<ICatalogoService, CatalogoService>();
+builder.Services.AddScoped<ICatalogoRepository, CatalogoRepository>();
 
 var app = builder.Build();
 

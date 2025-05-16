@@ -9,6 +9,7 @@ public static class VendedorMappingExtensions
     {
         return new VendedorDto
         {
+            Id = vendedor.Id,
             Nome = vendedor.Nome,
             Email = vendedor.Email,
             Telefone = vendedor.Telefone

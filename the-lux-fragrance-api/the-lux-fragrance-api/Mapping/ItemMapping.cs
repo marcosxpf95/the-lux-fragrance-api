@@ -9,6 +9,7 @@ public static class ItemMappingExtensions
     {
         return new ItemDto
         {
+            Id = item.Id,
             Nome = item.Nome,
             Descricao = item.Descricao,
             Preco = item.Preco,
