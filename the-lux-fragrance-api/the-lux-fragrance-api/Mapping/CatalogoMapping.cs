@@ -11,6 +11,7 @@ public static class CatalogoMappingExtensions
         {
             Id = catalogo.Id,
             NomeVendedor = catalogo.Vendedor?.Nome,
+            TelefoneVendedor = catalogo.Vendedor?.Telefone,
             Itens = catalogo.CatalogoItens?
                 .Select(ci => ci.Item?.ToDto())
                 .Where(dto => dto != null)

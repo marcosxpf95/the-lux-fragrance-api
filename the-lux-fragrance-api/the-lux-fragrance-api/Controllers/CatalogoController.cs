@@ -91,6 +91,8 @@ public class CatalogoController : ControllerBase
         if (catalogo == null)
             return NotFound();
 
-        return Ok(catalogo);
+        var response = catalogo.ToDto();
+
+        return Ok(response);
     }
 }

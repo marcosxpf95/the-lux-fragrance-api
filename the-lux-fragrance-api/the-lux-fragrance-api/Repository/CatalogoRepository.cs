@@ -72,7 +72,11 @@ public class CatalogoRepository : ICatalogoRepository
 
     public async Task<Catalogo?> GetCatalogoByVendedorIdAsync(int id)
     {
-        return await _context.Catalogos.FirstOrDefaultAsync(c => c.VendedorId == id);
+        return await _context.Catalogos
+            .Include(c => c.Vendedor)
+            .Include(x => x.CatalogoItens!)
+            .ThenInclude(x => x.Item)
+            .FirstOrDefaultAsync(c => c.VendedorId == id);
     }
 
     public async Task<IEnumerable<Catalogo>?> GetCatalogos()
