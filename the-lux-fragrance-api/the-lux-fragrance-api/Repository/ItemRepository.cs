@@ -35,6 +35,10 @@ public class ItemRepository : IItemRepository
 
         existente.Nome = item.Nome;
         existente.Preco = item.Preco;
+        existente.Descricao = item.Descricao;
+        existente.ImagemPerfume = item.ImagemPerfume;
+        existente.ImagemReferencia = item.ImagemReferencia;
+        existente.Categoria = item.Categoria;
 
         await _context.SaveChangesAsync();
         return existente;
