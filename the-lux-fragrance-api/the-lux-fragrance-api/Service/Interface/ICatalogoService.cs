@@ -10,5 +10,7 @@ public interface ICatalogoService
     Task<Catalogo?> GetCatalogoByVendedorIdAsync(int id);
     Task<Catalogo?> CriarCatalogoAsync(CriarCatalogoDto catalogo);
     Task<Catalogo?> AtualizarCatalogoAsync(int id, AtualizarCatalogoDto catalogo);
+    Task AddCatalogoItem(int catalogoId, int itemId);
+    Task<bool> DeleteCatalogoItem(int catalogoId, int itemId);
     Task DeletarCatalogo(int id);
 }

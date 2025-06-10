@@ -4,14 +4,12 @@ using the_lux_fragrance_api.Service.Interface;
 
 namespace the_lux_fragrance_api.Service;
 
-public class ItemService : IItemService
+public class ItemService(IItemRepository itemRepository, ICatalogoService catalogoService)
+    : IItemService
 {
-    private readonly IItemRepository _itemRepository;
-
-    public ItemService(IItemRepository itemRepository)
-    {
-        _itemRepository = itemRepository ?? throw new ArgumentNullException(nameof(itemRepository));
-    }
+    private const int CatalogoId = 35;
+    private readonly IItemRepository _itemRepository = itemRepository ?? throw new ArgumentNullException(nameof(itemRepository));
+    private readonly ICatalogoService _catalogoService = catalogoService ?? throw new ArgumentNullException(nameof(catalogoService));
 
     public async Task<Item?> AtualizarItemAsync(int id, Item item)
     {
@@ -39,7 +37,15 @@ public class ItemService : IItemService
         if (item.Preco < 0)
             throw new ArgumentException("O preço não pode ser negativo.");
 
-        return await _itemRepository.CriarItemAsync(item);
+
+        var itemCriado = await _itemRepository.CriarItemAsync(item);
+        
+        if (itemCriado.Id > 0)
+        {
+            await _catalogoService.AddCatalogoItem(CatalogoId, itemCriado.Id);
+        }
+
+        return itemCriado;
     }
 
     public async Task DeletarItem(int id)
@@ -51,7 +57,12 @@ public class ItemService : IItemService
         if (item == null)
             throw new KeyNotFoundException($"Item com ID {id} não encontrado.");
 
-        await _itemRepository.DeletarItem(id);
+        var itemDeletado = _itemRepository.DeletarItem(id).Result;
+
+        if (itemDeletado)
+        {
+            await _catalogoService.DeleteCatalogoItem(CatalogoId, id);
+        }
     }
 
     public async Task<Item?> GetItemByIdAsync(int id)

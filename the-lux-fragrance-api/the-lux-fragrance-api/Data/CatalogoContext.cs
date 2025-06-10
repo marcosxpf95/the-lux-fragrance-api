@@ -10,6 +10,7 @@ public class CatalogoContext : DbContext
     {
     }
 
+    public DbSet<User> Users { get; set; }
     public DbSet<Item> Itens { get; set; }
     public DbSet<Vendedor> Vendedores { get; set; }
     public DbSet<Catalogo> Catalogos { get; set; }
@@ -18,7 +19,10 @@ public class CatalogoContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
-
+        
+        modelBuilder.Entity<User>()
+            .HasIndex(entity => entity.Email).IsUnique();
+        
         modelBuilder.Entity<CatalogoItem>()
             .HasKey(ci => new { ci.CatalogoId, ci.ItemId });
 

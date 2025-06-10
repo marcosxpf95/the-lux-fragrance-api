@@ -40,14 +40,16 @@ public class ItemRepository : IItemRepository
         return existente;
     }
 
-    public async Task DeletarItem(int id)
+    public async Task<bool> DeletarItem(int id)
     {
         var item = await _context.Itens.FindAsync(id);
         if (item != null)
         {
             _context.Itens.Remove(item);
             await _context.SaveChangesAsync();
+            return true;
         }
+        return false;
     }
 
     public async Task<Item?> GetItemByIdAsync(int id)

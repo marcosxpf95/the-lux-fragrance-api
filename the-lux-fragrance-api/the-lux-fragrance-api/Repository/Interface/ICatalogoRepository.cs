@@ -11,5 +11,7 @@ public interface ICatalogoRepository
     Task<Catalogo?> AtualizarCatalogoAsync(int id, Catalogo catalogo);
     Task<bool> CatalogoExists(int id);
     Task<bool> CatalogoExistsParaVendedor(int vendedorId);
+    Task AddCatalogoItem(int catalogoId, int itemId);
+    Task<bool> DeleteCatalogoItem(int catalogoId, int itemId);
     Task DeletarCatalogo(int id);
 }

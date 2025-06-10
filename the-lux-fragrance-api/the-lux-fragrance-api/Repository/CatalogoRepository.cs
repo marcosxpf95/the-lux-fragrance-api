@@ -39,10 +39,33 @@ public class CatalogoRepository : ICatalogoRepository
         return _context.Catalogos.AnyAsync(c => c.VendedorId == vendedorId);
     }
 
+    public Task AddCatalogoItem(int catalogoId, int itemId)
+    {
+        _context.CatalogoItens.Add(new CatalogoItem
+        {
+            ItemId = itemId,
+            CatalogoId = catalogoId,
+        });
+        _context.SaveChanges();
+        
+        return Task.CompletedTask;
+    }
+
+    public async Task<bool> DeleteCatalogoItem(int catalogoId, int itemId)
+    {
+        var catalogoItemExists = await _context.CatalogoItens.FirstOrDefaultAsync(x => x.ItemId == itemId && x.CatalogoId == catalogoId);
+
+        if (catalogoItemExists is null)
+            return false;
+
+        _context.CatalogoItens.Remove(catalogoItemExists);
+        
+        return true;
+    }
+
     public Task<Catalogo> CriarCatalogoAsync(Catalogo catalogo)
     {
-        if (catalogo == null)
-            throw new ArgumentNullException(nameof(catalogo));
+        ArgumentNullException.ThrowIfNull(catalogo);
 
         _context.Catalogos.Add(catalogo);
         _context.SaveChanges();

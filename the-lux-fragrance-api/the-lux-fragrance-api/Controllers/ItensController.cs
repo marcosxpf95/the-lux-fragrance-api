@@ -59,21 +59,16 @@ public class ItensController : ControllerBase
     }
     
     [HttpPut("{id}")]
-    public async Task<IActionResult> PutItem(int id, Item item)
+    public async Task<IActionResult> PutItem(int id, ItemDto item)
     {
-        if (id != item.Id)
-        {
-            return BadRequest("O ID da URL não corresponde ao ID do item.");
-        }
-
-        var itemAtualizado = await _itemService.AtualizarItemAsync(id, item);
+        var itemAtualizado = await _itemService.AtualizarItemAsync(id, item.ToModel());
 
         if (itemAtualizado == null)
         {
             return NotFound($"Item com ID {id} não encontrado.");
         }
 
-        return NoContent();
+        return Ok(itemAtualizado); 
     }
 
     [HttpDelete("{id}")]

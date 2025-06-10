@@ -45,6 +45,16 @@ public class CatalogoService : ICatalogoService
         }
     }
 
+    public async Task AddCatalogoItem(int catalogoId, int itemId)
+    {
+        await _catalogoRepository.AddCatalogoItem(catalogoId, itemId);
+    }
+
+    public async Task<bool> DeleteCatalogoItem(int catalogoId, int itemId)
+    {
+        return await _catalogoRepository.DeleteCatalogoItem(catalogoId, itemId);
+    }
+
     public async Task<Catalogo?> CriarCatalogoAsync(CriarCatalogoDto catalogo)
     {
         if (catalogo == null)

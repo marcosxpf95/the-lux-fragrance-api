@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using the_lux_fragrance_api.Data;
+using the_lux_fragrance_api.Helpers;
 using the_lux_fragrance_api.Repository;
 using the_lux_fragrance_api.Repository.Interface;
 using the_lux_fragrance_api.Service;
@@ -38,6 +39,9 @@ builder.Services.AddScoped<IVendedorService, VendedorService>();
 builder.Services.AddScoped<IVendedorRepository, VendedorRepository>();
 builder.Services.AddScoped<ICatalogoService, CatalogoService>();
 builder.Services.AddScoped<ICatalogoRepository, CatalogoRepository>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<JwtService>();
 
 var app = builder.Build();
 
@@ -54,6 +58,17 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseCors(options => options
+    .WithOrigins(
+        "http://localhost:3000",
+        "http://127.0.0.1:5173",
+        "http://localhost:4200"
+    )
+    .AllowAnyHeader()
+    .AllowAnyMethod()
+    .AllowCredentials()
+);
 
 app.UseAuthorization();
 
