@@ -26,9 +26,8 @@ public class CatalogoService : ICatalogoService
 
         if (!catalogoExistente)
             throw new KeyNotFoundException($"Catálogo com ID {id} não encontrado.");
-
-
-        if (catalogo.ItemIds != null && catalogo.ItemIds.Any())
+        
+        if (catalogo.ItemIds.Any())
         {
             var catalogoItems = MapearCatalogoItens(id, catalogo.ItemIds);
 
@@ -75,7 +74,7 @@ public class CatalogoService : ICatalogoService
         if (catalogoCriado == null)
             throw new InvalidOperationException("Falha ao criar o catálogo.");
 
-        if (catalogo.ItemIds != null && catalogo.ItemIds.Any())
+        if (catalogo.ItemIds.Any())
         {
             novoCatalogo.CatalogoItens = MapearCatalogoItens(catalogoCriado.Id, catalogo.ItemIds);
         }

@@ -4,14 +4,9 @@ using the_lux_fragrance_api.Service.Interface;
 
 namespace the_lux_fragrance_api.Service;
 
-public class VendedorService : IVendedorService
+public class VendedorService(IVendedorRepository vendedorRepository) : IVendedorService
 {
-    private readonly IVendedorRepository _vendedorRepository;
-
-    public VendedorService(IVendedorRepository vendedorRepository)
-    {
-        _vendedorRepository = vendedorRepository ?? throw new ArgumentNullException(nameof(vendedorRepository));
-    }
+    private readonly IVendedorRepository _vendedorRepository = vendedorRepository ?? throw new ArgumentNullException(nameof(vendedorRepository));
 
     public async Task<Vendedor?> AtualizarVendedorAsync(int id, Vendedor vendedor)
     {
