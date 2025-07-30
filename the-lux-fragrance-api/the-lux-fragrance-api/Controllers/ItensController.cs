@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using the_lux_fragrance_api.Dto;
 using the_lux_fragrance_api.Mappings;
 using the_lux_fragrance_api.Models;
@@ -8,19 +9,13 @@ namespace the_lux_fragrance_api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class ItensController : ControllerBase
+public class ItensController(IItemService itemService) : ControllerBase
 {
-    private readonly IItemService _itemService;
-
-    public ItensController(IItemService itemService)
-    {
-        _itemService = itemService;
-    }
-
     [HttpGet]
+    [Authorize]
     public async Task<ActionResult<IEnumerable<ItemDto>>> GetItens()
     {
-        var itens = await _itemService.GetItens();
+        var itens = await itemService.GetItens();
 
         if (itens == null || !itens.Any())
         {
@@ -32,10 +27,11 @@ public class ItensController : ControllerBase
         return Ok(itensDto);
     }
     
-    [HttpGet("{id}")]
+    [HttpGet("{id:int}")]
+    [Authorize]
     public async Task<ActionResult<ItemDto>> GetItem(int id)
     {
-        var item = await _itemService.GetItemByIdAsync(id);
+        var item = await itemService.GetItemByIdAsync(id);
 
         if (item == null)
         {
@@ -46,9 +42,10 @@ public class ItensController : ControllerBase
     }
     
     [HttpPost]
+    [Authorize]
     public async Task<ActionResult<Item>> PostItem(ItemDto item)
     {
-        var itemCreated = await _itemService.CriarItemAsync(item.ToModel());
+        var itemCreated = await itemService.CriarItemAsync(item.ToModel());
 
         if (itemCreated == null)
         {
@@ -58,10 +55,11 @@ public class ItensController : ControllerBase
         return CreatedAtAction(nameof(GetItem), new { id = itemCreated.Id }, itemCreated);
     }
     
-    [HttpPut("{id}")]
+    [HttpPut("{id:int}")]
+    [Authorize]
     public async Task<IActionResult> PutItem(int id, ItemDto item)
     {
-        var itemAtualizado = await _itemService.AtualizarItemAsync(id, item.ToModel());
+        var itemAtualizado = await itemService.AtualizarItemAsync(id, item.ToModel());
 
         if (itemAtualizado == null)
         {
@@ -71,17 +69,18 @@ public class ItensController : ControllerBase
         return Ok(itemAtualizado); 
     }
 
-    [HttpDelete("{id}")]
+    [HttpDelete("{id:int}")]
+    [Authorize]
     public async Task<IActionResult> DeleteItem(int id)
     {
-        var item = await _itemService.GetItemByIdAsync(id);
+        var item = await itemService.GetItemByIdAsync(id);
 
         if (item == null)
         {
             return NotFound($"Item com ID {id} não encontrado.");
         }
 
-        await _itemService.DeletarItem(item.Id);
+        await itemService.DeletarItem(item.Id);
 
         return NoContent();
     }

@@ -1,4 +1,6 @@
-﻿namespace the_lux_fragrance_api.Models;
+﻿using System.Text.Json.Serialization;
+
+namespace the_lux_fragrance_api.Models;
 
 public class Item
 {
@@ -9,5 +11,6 @@ public class Item
     public string? ImagemPerfume { get; set; }
     public string? ImagemReferencia { get; set; }
     public string? Categoria { get; set; }
+    [JsonIgnore]
     public ICollection<CatalogoItem>? CatalogoItens { get; set; }
 }
