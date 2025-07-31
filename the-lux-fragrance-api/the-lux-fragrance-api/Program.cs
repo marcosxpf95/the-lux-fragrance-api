@@ -20,7 +20,9 @@ builder.Services.AddCors(options =>
         builder.WithOrigins(
                 "http://localhost:3000",
                 "http://127.0.0.1:5173",
-                "http://localhost:4200"
+                "http://localhost:4200",
+                "https://the-lux-fragrance-catalog-v2.vercel.app/",
+                "https://the-lux-fragrance-catalog-v2.vercel.app"
             )
             .AllowAnyHeader()
             .AllowAnyMethod()
