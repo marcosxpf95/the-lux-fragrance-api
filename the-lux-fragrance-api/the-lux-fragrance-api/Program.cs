@@ -21,10 +21,10 @@ builder.Services.AddCors(options =>
                 "http://localhost:3000",
                 "http://127.0.0.1:5173",
                 "http://localhost:4200",
-                "http://theluxfragrance.com.br/",
-                "https://theluxfragrance.com.br/",
-                "http://www.theluxfragrance.com.br/",
-                "https://www.theluxfragrance.com.br/"
+                "http://theluxfragrance.com.br",
+                "https://theluxfragrance.com.br",
+                "http://www.theluxfragrance.com.br",
+                "https://www.theluxfragrance.com.br"
             )
             .AllowAnyHeader()
             .AllowAnyMethod()
